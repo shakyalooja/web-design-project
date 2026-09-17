@@ -54,27 +54,31 @@
     </div>
 
     <h3>Add an Activity</h3>
-    <form id="activityForm">
-        <label>Activity Name:</label>
-        <input type="text" name="activity_name" id="activityName">
-        <br><br>
+<form id="activityForm">
+    <label>Destination:</label>
+    <select name="destination_id" id="activityDestination"></select>
+    <br><br>
 
-        <label>Category:</label>
-        <select name="category" id="category">
-            <option value="transport">Transport</option>
-            <option value="accommodation">Accommodation</option>
-            <option value="food">Food</option>
-            <option value="sightseeing">Sightseeing</option>
-            <option value="other">Other</option>
-        </select>
-        <br><br>
+    <label>Activity Name:</label>
+    <input type="text" name="activity_name" id="activityName">
+    <br><br>
 
-        <label>Estimated Cost:</label>
-        <input type="number" name="estimated_cost" id="estimatedCost" step="0.01">
-        <br><br>
+    <label>Category:</label>
+    <select name="category" id="category">
+        <option value="transport">Transport</option>
+        <option value="accommodation">Accommodation</option>
+        <option value="food">Food</option>
+        <option value="sightseeing">Sightseeing</option>
+        <option value="other">Other</option>
+    </select>
+    <br><br>
 
-        <button type="submit">Add Activity</button>
-    </form>
+    <label>Estimated Cost:</label>
+    <input type="number" name="estimated_cost" id="estimatedCost" step="0.01">
+    <br><br>
 
+    <button type="submit">Add Activity</button>
+</form>
+    <script src="js/detail.js"></script>
 </body>
 </html>
