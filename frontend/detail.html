@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trip Detail</title>
+</head>
+<body>
+
+    <h1 id="tripNameHeading">Trip Name Here</h1>
+
+    <p>Total Estimated Cost: <span id="totalCost">$0</span></p>
+
+    <button id="editTripBtn">Edit Trip</button>
+    <button id="deleteTripBtn">Delete Trip</button>
+    <button id="shareTripBtn">Share Trip</button>
+    <a href="dashboard.html"><button type="button">Back to Dashboard</button></a>
+
+    <hr>
+
+    <h2>Destinations</h2>
+
+    <!-- This is where destination cards will go later -->
+    <div id="destinationList">
+        <p>Destinations will appear here.</p>
+    </div>
+
+    <h3>Add a Destination</h3>
+    <form id="destinationForm">
+        <label>Location Name:</label>
+        <input type="text" name="location_name" id="locationName">
+        <br><br>
+
+        <label>Arrival Date:</label>
+        <input type="date" name="arrival_date" id="arrivalDate">
+        <br><br>
+
+        <label>Departure Date:</label>
+        <input type="date" name="departure_date" id="departureDate">
+        <br><br>
+
+        <label>Notes:</label>
+        <textarea name="notes" id="notes"></textarea>
+        <br><br>
+
+        <button type="submit">Add Destination</button>
+    </form>
+
+    <hr>
+
+    <h2>Activities</h2>
+
+    <!-- This is where activity cards will go later, per destination -->
+    <div id="activityList">
+        <p>Activities will appear here.</p>
+    </div>
+
+    <h3>Add an Activity</h3>
+    <form id="activityForm">
+        <label>Activity Name:</label>
+        <input type="text" name="activity_name" id="activityName">
+        <br><br>
+
+        <label>Category:</label>
+        <select name="category" id="category">
+            <option value="transport">Transport</option>
+            <option value="accommodation">Accommodation</option>
+            <option value="food">Food</option>
+            <option value="sightseeing">Sightseeing</option>
+            <option value="other">Other</option>
+        </select>
+        <br><br>
+
+        <label>Estimated Cost:</label>
+        <input type="number" name="estimated_cost" id="estimatedCost" step="0.01">
+        <br><br>
+
+        <button type="submit">Add Activity</button>
+    </form>
+
+</body>
+</html>
