@@ -1,3 +1,13 @@
+document.getElementById('logoutBtn').addEventListener('click', function() {
+    fetch('../backend/auth/logout.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = "login.html";
+            }
+        })
+        .catch(error => console.error("Something went wrong:", error));
+});
 const urlParams = new URLSearchParams(window.location.search);
 const tripId = urlParams.get('trip_id');
 
@@ -20,6 +30,27 @@ function loadTripInfo() {
 }
 
 loadTripInfo();
+document.getElementById('shareTripBtn').addEventListener('click', function() {
+    fetch('../backend/trips/toggle_share.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ trip_id: tripId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (data.is_shared) {
+                const shareUrl = `${window.location.origin}/trip-planner/frontend/shared-trip.html?trip_id=${tripId}`;
+                prompt("Trip is now shared! Copy this link:", shareUrl);
+            } else {
+                alert("Trip is no longer shared.");
+            }
+        } else {
+            alert("Error: " + data.error);
+        }
+    })
+    .catch(error => console.error("Something went wrong:", error));
+});
 loadDestinations();
 
 document.getElementById('destinationForm').addEventListener('submit', function(event) {
