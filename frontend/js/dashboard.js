@@ -1,3 +1,14 @@
+document.getElementById('logoutBtn').addEventListener('click', function() {
+    fetch('../backend/auth/logout.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = "login.html";
+            }
+        })
+        .catch(error => console.error("Something went wrong:", error));
+});
+
 document.getElementById('tripForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
