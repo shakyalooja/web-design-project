@@ -236,8 +236,8 @@ function loadActivities() {
                     <h4>${act.activity_name}</h4>
                     <p>Category: ${act.category ?? ''}</p>
                     <p>Cost: $${act.estimated_cost}</p>
-                    <button onclick="editActivity(${act.activity_id}, '${act.activity_name}', '${act.category ?? ''}', ${act.estimated_cost})">Edit</button>
-                    <button onclick="deleteActivity(${act.activity_id})">Delete</button>
+                    <button class="btn-secondary" onclick="editActivity(${act.activity_id}, '${act.activity_name}', '${act.category ?? ''}', ${act.estimated_cost})">Edit</button>
+                    <button class="btn-secondary" onclick="deleteActivity(${act.activity_id})">Delete</button>
                 `;
                 activityList.appendChild(div);
             });

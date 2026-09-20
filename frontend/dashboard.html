@@ -1,29 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>My Trips</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <header class="site-header">
+        <a href="dashboard.html" class="brand"><span class="brand-icon">🧭</span> TripPlanner</a>
+        <nav>
+            <button id="logoutBtn" class="btn-secondary">Logout</button>
+        </nav>
+    </header>
 
-   <body>
     <div class="page-container">
         <h1>My Trips</h1>
+
         <h2>Featured Destinations</h2>
-            <div class="carousel">
+        <div class="carousel">
             <button class="carousel-btn" id="prevBtn">&#10094;</button>
-                <div class="carousel-track-container">
-                    <div class="carousel-track" id="carouselTrack">
+            <div class="carousel-track-container">
+                <div class="carousel-track" id="carouselTrack">
                     <p>Loading...</p>
-                     </div>
                 </div>
-             <button class="carousel-btn" id="nextBtn">&#10095;</button>
             </div>
-        
-        <button id="logoutBtn">Logout</button>
+            <button class="carousel-btn" id="nextBtn">&#10095;</button>
+        </div>
 
         <button id="newTripBtn">+ New Trip</button>
-
 
         <div id="tripList">
             <p>Trip cards will appear here.</p>
@@ -31,24 +35,26 @@
 
         <h2>Add a Trip</h2>
         <form id="tripForm">
-            <label>Trip Name:</label>
+            <label for="tripName">Trip Name:</label>
             <input type="text" name="trip_name" id="tripName">
             <br><br>
 
-            <label>Start Date:</label>
+            <label for="startDate">Start Date:</label>
             <input type="date" name="start_date" id="startDate">
             <br><br>
 
-            <label>End Date:</label>
+            <label for="endDate">End Date:</label>
             <input type="date" name="end_date" id="endDate">
             <br><br>
 
             <button type="submit">Save Trip</button>
         </form>
     </div>
+
     <script src="js/carousel.js"></script>
     <script src="js/auth-check.js"></script>
     <script src="js/dashboard.js"></script>
 </body>
-</body>
+
+   
 </html>

@@ -52,9 +52,9 @@ function loadTrips() {
                 div.innerHTML = `
                     <h3>${trip.trip_name}</h3>
                     <p>${trip.start_date ?? ''} to ${trip.end_date ?? ''}</p>
-                    <a href="detail.html?trip_id=${trip.trip_id}"><button type="button">View</button></a>
-                    <button onclick="editTrip(${trip.trip_id}, '${trip.trip_name}', '${trip.start_date ?? ''}', '${trip.end_date ?? ''}')">Edit</button>
-                    <button onclick="deleteTrip(${trip.trip_id})">Delete</button>
+                    <a href="detail.html?trip_id=${trip.trip_id}"><button type="button" class="btn-secondary">View</button></a>
+                    <button class="btn-secondary" onclick="editTrip(${trip.trip_id}, '${trip.trip_name}', '${trip.start_date ?? ''}', '${trip.end_date ?? ''}')">Edit</button>
+                    <button class="btn-secondary" onclick="deleteTrip(${trip.trip_id})">Delete</button>
                 `;
                 tripList.appendChild(div);
             });
