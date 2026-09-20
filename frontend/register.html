@@ -6,32 +6,38 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="auth-container">
-<div class="auth-container">
-    <h1>Register</h1>
+    <header class="site-header">
+        <a href="index.html" class="brand">TripPlanner</a>
+    </header>
 
-    <form id="registerForm">
-    <label for="fullName">Full Name:</label>
-    <input type="text" name="full_name" id="fullName">
-    <br><br>
+    <div class="auth-page-wrapper">
+        <div class="auth-container">
+            <h1>Register</h1>
 
-    <label for="regEmail">Email:</label>
-    <input type="email" name="email" id="regEmail">
-    <br><br>
+            <form id="registerForm">
+                <label for="fullName">Full Name:</label>
+                <input type="text" name="full_name" id="fullName">
+                <br><br>
 
-    <label for="regPassword">Password:</label>
-    <input type="password" name="password" id="regPassword">
-    <br><br>
+                <label for="regEmail">Email:</label>
+                <input type="email" name="email" id="regEmail">
+                <br><br>
 
-    <label for="confirmPassword">Confirm Password:</label>
-    <input type="password" name="confirm_password" id="confirmPassword">
-    <br><br>
+                <label for="regPassword">Password:</label>
+                <input type="password" name="password" id="regPassword">
+                <br><br>
 
-    <button type="submit">Register</button>
-</form>
-    <p>Already have an account? <a href="login.html">Login here</a></p>
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" name="confirm_password" id="confirmPassword">
+                <br><br>
+
+                <button type="submit">Register</button>
+            </form>
+
+            <p>Already have an account? <a href="login.html">Login here</a></p>
+        </div>
+    </div>
+
     <script src="js/register.js"></script>
-</div>
-</div>
 </body>
 </html>

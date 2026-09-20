@@ -393,15 +393,16 @@ button.btn-danger:hover {
  
 /* ===== Home / Landing page ===== */
 .home-hero {
-    max-width: 600px;
-    margin: 100px auto 0;
+    max-width: 640px;
+    margin: 70px auto 20px;
     text-align: center;
     padding: 0 20px;
 }
 
 .home-hero h1 {
-    font-size: 32px;
+    font-size: 34px;
     margin-bottom: 14px;
+    line-height: 1.25;
 }
 
 .home-hero p {
@@ -413,4 +414,61 @@ button.btn-danger:hover {
 button.btn-large {
     padding: 14px 32px;
     font-size: 16px;
+}
+
+.home-section {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.home-section h2 {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 18px;
+}
+
+.feature-card {
+    background: #ffffff;
+    border: 1px solid #e5e9f0;
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.feature-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.feature-card h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.feature-card p {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.home-footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: #94a3b8;
+    font-size: 13px;
+    border-top: 1px solid #e5e9f0;
+    margin-top: 40px;
 }
