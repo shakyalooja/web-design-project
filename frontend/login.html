@@ -2,24 +2,27 @@
 <html>
 <head>
     <title>Login</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="auth-container">
+        <h1>Login</h1>
 
-    <h1>Login</h1>
+        <form id="loginForm">
+            <label>Email:</label>
+            <input type="email" name="email">
+            <br><br>
 
-    <form id="loginForm">
-        <label>Email:</label>
-        <input type="email" name="email">
-        <br><br>
+            <label>Password:</label>
+            <input type="password" name="password">
+            <br><br>
 
-        <label>Password:</label>
-        <input type="password" name="password">
-        <br><br>
+            <button type="submit">Login</button>
+        </form>
 
-        <button type="submit">Login</button>
-    </form>
+        <p>Don't have an account? <a href="register.html">Register here</a></p>
+    </div>
 
-    <p>Don't have an account? <a href="register.html">Register here</a></p>
     <script src="js/login.js"></script>
 </body>
 </html>

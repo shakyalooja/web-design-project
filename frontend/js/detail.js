@@ -75,10 +75,10 @@ document.getElementById('destinationForm').addEventListener('submit', function(e
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-    alert("Destination added!");
-    document.getElementById('destinationForm').reset();
-    loadDestinations();
-}
+            alert("Destination added!");
+            document.getElementById('destinationForm').reset();
+            loadDestinations();
+        }
     })
     .catch(error => console.error("Something went wrong:", error));
 });
@@ -101,8 +101,8 @@ function loadDestinations() {
 
             data.destinations.forEach(dest => {
                 const div = document.createElement('div');
+                div.className = 'card';
                 div.innerHTML = `
-                    <hr>
                     <h4>${dest.location_name}</h4>
                     <p>${dest.arrival_date ?? ''} to ${dest.departure_date ?? ''}</p>
                     <p>${dest.notes ?? ''}</p>
@@ -116,7 +116,7 @@ function loadDestinations() {
                 option.textContent = dest.location_name;
                 destinationDropdown.appendChild(option);
             });
-loadActivities();
+            loadActivities();
 
         })
         .catch(error => console.error("Something went wrong:", error));
@@ -231,8 +231,8 @@ function loadActivities() {
                 total += parseFloat(act.estimated_cost);
 
                 const div = document.createElement('div');
+                div.className = 'card';
                 div.innerHTML = `
-                    <hr>
                     <h4>${act.activity_name}</h4>
                     <p>Category: ${act.category ?? ''}</p>
                     <p>Cost: $${act.estimated_cost}</p>

@@ -48,8 +48,8 @@ function loadTrips() {
 
             data.trips.forEach(trip => {
                 const div = document.createElement('div');
+                div.className = 'card';
                 div.innerHTML = `
-                    <hr>
                     <h3>${trip.trip_name}</h3>
                     <p>${trip.start_date ?? ''} to ${trip.end_date ?? ''}</p>
                     <a href="detail.html?trip_id=${trip.trip_id}"><button type="button">View</button></a>

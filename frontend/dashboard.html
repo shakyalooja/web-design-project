@@ -2,39 +2,42 @@
 <html>
 <head>
     <title>My Trips</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <h1>My Trips</h1>
-    <button id="logoutBtn">Logout</button>
+   <body>
+    <div class="page-container">
+        <h1>My Trips</h1>
+        <button id="logoutBtn">Logout</button>
 
-    <button id="newTripBtn">+ New Trip</button>
+        <button id="newTripBtn">+ New Trip</button>
 
-    <hr>
 
-    <!-- This is where the list of trips will go later -->
-    <div id="tripList">
-        <p>Trip cards will appear here.</p>
+        <div id="tripList">
+            <p>Trip cards will appear here.</p>
+        </div>
+
+        <h2>Add a Trip</h2>
+        <form id="tripForm">
+            <label>Trip Name:</label>
+            <input type="text" name="trip_name" id="tripName">
+            <br><br>
+
+            <label>Start Date:</label>
+            <input type="date" name="start_date" id="startDate">
+            <br><br>
+
+            <label>End Date:</label>
+            <input type="date" name="end_date" id="endDate">
+            <br><br>
+
+            <button type="submit">Save Trip</button>
+        </form>
     </div>
 
-    <!-- A simple hidden-for-now form to create a trip -->
-    <h2>Add a Trip</h2>
-    <form id="tripForm">
-        <label>Trip Name:</label>
-        <input type="text" name="trip_name" id="tripName">
-        <br><br>
-
-        <label>Start Date:</label>
-        <input type="date" name="start_date" id="startDate">
-        <br><br>
-
-        <label>End Date:</label>
-        <input type="date" name="end_date" id="endDate">
-        <br><br>
-
-        <button type="submit">Save Trip</button>
-    </form>
     <script src="js/auth-check.js"></script>
     <script src="js/dashboard.js"></script>
+</body>
 </body>
 </html>

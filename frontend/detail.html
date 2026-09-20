@@ -2,9 +2,10 @@
 <html>
 <head>
     <title>Trip Detail</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
+ <div class="page-container">
     <h1 id="tripNameHeading">Trip Name Here</h1>
 
     <p>Total Estimated Cost: <span id="totalCost">$0</span></p>
@@ -15,7 +16,6 @@
     <a href="dashboard.html"><button type="button">Back to Dashboard</button></a>
     <a href="dashboard.html"><button type="button">Back to Dashboard</button></a>
     <button id="logoutBtn">Logout</button>
-    <hr>
 
     <h2>Destinations</h2>
 
@@ -45,7 +45,6 @@
         <button type="submit">Add Destination</button>
     </form>
 
-    <hr>
 
     <h2>Activities</h2>
 
@@ -80,6 +79,7 @@
 
     <button type="submit">Add Activity</button>
 </form>
+</div>
     <script src="js/auth-check.js"></script>
     <script src="js/detail.js"></script>
 </body>
