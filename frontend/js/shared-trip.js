@@ -24,7 +24,7 @@ if (!tripId) {
 
             data.destinations.forEach(dest => {
                 const div = document.createElement('div');
-
+                div.className = 'card';
                 let activitiesHtml = '<p>No activities yet.</p>';
                 if (dest.activities.length > 0) {
                     activitiesHtml = '<ul>' + dest.activities.map(act =>
@@ -33,7 +33,6 @@ if (!tripId) {
                 }
 
                 div.innerHTML = `
-                    <hr>
                     <h3>${dest.location_name}</h3>
                     <p>${dest.arrival_date ?? ''} to ${dest.departure_date ?? ''}</p>
                     <p>${dest.notes ?? ''}</p>

@@ -9,6 +9,17 @@
    <body>
     <div class="page-container">
         <h1>My Trips</h1>
+        <h2>Featured Destinations</h2>
+            <div class="carousel">
+            <button class="carousel-btn" id="prevBtn">&#10094;</button>
+                <div class="carousel-track-container">
+                    <div class="carousel-track" id="carouselTrack">
+                    <p>Loading...</p>
+                     </div>
+                </div>
+             <button class="carousel-btn" id="nextBtn">&#10095;</button>
+            </div>
+        
         <button id="logoutBtn">Logout</button>
 
         <button id="newTripBtn">+ New Trip</button>
@@ -35,7 +46,7 @@
             <button type="submit">Save Trip</button>
         </form>
     </div>
-
+    <script src="js/carousel.js"></script>
     <script src="js/auth-check.js"></script>
     <script src="js/dashboard.js"></script>
 </body>

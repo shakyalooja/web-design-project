@@ -188,3 +188,121 @@ body:has(.auth-container) {
 #tripNameHeading + p {
     margin-bottom: 16px;
 }
+.shared-page {
+    max-width: 700px;
+    margin: 40px auto;
+}
+
+.shared-page p#tripDates {
+    color: #64748b;
+    margin-bottom: 24px;
+}
+
+.shared-page #destinationList {
+    margin-top: 16px;
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus,
+a:focus {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+/* carousel css */
+.carousel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.carousel-track-container {
+    overflow: hidden;
+    width: 100%;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+}
+
+.carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.place-card {
+   flex: 0 0 210px;
+    height: 260px;
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.place-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.22);
+}
+
+
+.place-card img {
+    width: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.place-card-info {
+    padding: 10px 12px;
+     position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 14px 14px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
+    color: white
+}
+
+.place-card-info h4 {
+    margin-bottom: 2px;
+    font-size: 15px;
+     margin-bottom: 2px;
+}
+
+.place-country {
+   color: #93c5fd;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.place-desc {
+    color: rgba(255,255,255,0.85);
+    font-size: 12px;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.carousel-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.carousel-btn:hover {
+    background: #2563eb;
+}
