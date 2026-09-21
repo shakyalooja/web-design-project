@@ -1,23 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>Shared Trip</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A read-only shared trip itinerary made with TripPlanner.">
+    <title>Shared Trip - TripPlanner</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <header class="site-header">
+        <a href="index.html" class="brand">TripPlanner</a>
+    </header>
 
-    <div class="shared-page">
+    <main id="main" class="shared-page">
         <h1 id="tripNameHeading">Loading...</h1>
-        <p id="tripDates"></p>
+        <p id="tripDates" class="muted"></p>
+        <p class="muted">This is a read-only shared trip.</p>
+
+        <p class="total-cost" id="totalLine" hidden>Total Estimated Cost: <strong id="totalCost"></strong></p>
+        <section class="card" id="breakdownSection" aria-labelledby="breakdownHeading" hidden>
+            <h2 id="breakdownHeading">Cost breakdown</h2>
+            <ul id="breakdownList" class="breakdown-list"></ul>
+        </section>
 
         <h2>Destinations</h2>
         <div id="destinationList"></div>
-    </div>
+    </main>
 
     <script src="js/common.js"></script>
     <script src="js/shared-trip.js"></script>
-
 </body>
 </html>

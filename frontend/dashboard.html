@@ -3,29 +3,31 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>My Trips</title>
+    <meta name="description" content="Your trips, budgets and featured destinations.">
+    <title>My Trips - TripPlanner</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
     <header class="site-header">
-        <a href="dashboard.html" class="brand"><span class="brand-icon">🧭</span> TripPlanner</a>
-        <nav>
+        <a href="dashboard.html" class="brand">TripPlanner</a>
+        <nav aria-label="Main">
             <button id="logoutBtn" class="btn-secondary">Logout</button>
         </nav>
     </header>
 
-    <main class="page-container">
+    <main id="main" class="page-container">
         <h1>My Trips</h1>
 
         <h2>Featured Destinations</h2>
         <div class="carousel">
-            <button class="carousel-btn" id="prevBtn">&#10094;</button>
+            <button type="button" class="carousel-btn" id="prevBtn" aria-label="Previous destinations">&#10094;</button>
             <div class="carousel-track-container">
-                <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-track" id="carouselTrack" tabindex="0" role="region" aria-label="Featured destinations">
                     <p>Loading...</p>
                 </div>
             </div>
-            <button class="carousel-btn" id="nextBtn">&#10095;</button>
+            <button type="button" class="carousel-btn" id="nextBtn" aria-label="Next destinations">&#10095;</button>
         </div>
 
         <button id="newTripBtn" type="button">+ New Trip</button>
@@ -38,13 +40,16 @@
         <h2 id="addTripHeading">Add a Trip</h2>
         <form id="tripForm" aria-labelledby="addTripHeading">
             <label for="tripName">Trip Name:</label>
-            <input type="text" name="trip_name" id="tripName" required>
+            <input type="text" name="trip_name" id="tripName" required maxlength="150">
 
             <label for="startDate">Start Date:</label>
             <input type="date" name="start_date" id="startDate">
 
             <label for="endDate">End Date:</label>
             <input type="date" name="end_date" id="endDate">
+
+            <label for="tripBudget">Budget ($, optional):</label>
+            <input type="number" name="budget" id="tripBudget" min="0" step="0.01">
 
             <button type="submit">Save Trip</button>
         </form>

@@ -24,7 +24,7 @@ function renderCarousel() {
         <div class="place-card">
             <img src="${esc(place.image_url)}" alt="${esc(place.place_name)}">
             <div class="place-card-info">
-                <h4>${esc(place.place_name)}</h4>
+                <h3>${esc(place.place_name)}</h3>
                 <p class="place-country">${esc(place.country)}</p>
                 <p class="place-desc">${esc(place.description)}</p>
             </div>

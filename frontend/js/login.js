@@ -1,30 +1,21 @@
-document.getElementById('loginForm').addEventListener('submit', function(event) {
+if (new URLSearchParams(window.location.search).get('registered')) {
+    showMessage('Account created. Please log in.');
+}
+
+document.getElementById('loginForm').addEventListener('submit', event => {
     event.preventDefault();
+    const form = event.target;
 
-    const email = document.querySelector('input[name="email"]').value;
-    const password = document.querySelector('input[name="password"]').value;
-
-    fetch('../backend/auth/login.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email: email,
-            password: password
+    postJson('../backend/auth/login.php', {
+        email: form.email.value,
+        password: form.password.value
+    })
+        .then(data => {
+            if (data.success) {
+                window.location.href = 'dashboard.html';
+            } else {
+                showMessage(data.error, true);
+            }
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        if (data.success) {
-            alert("Login successful!");
-            window.location.href = "dashboard.html";
-        } else {
-            alert("Error: " + data.error);
-        }
-    })
-    .catch(error => {
-        console.error("Something went wrong:", error);
-    });
+        .catch(() => showMessage('Something went wrong. Please try again.', true));
 });

@@ -1,29 +1,24 @@
-document.getElementById('registerForm').addEventListener('submit', function(event) {
+document.getElementById('registerForm').addEventListener('submit', event => {
     event.preventDefault();
+    const form = event.target;
 
-    const fullName = document.getElementById('fullName').value;
-    const email = document.getElementById('regEmail').value;
-    const password = document.getElementById('regPassword').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-
-    if (password !== confirmPassword) {
-        alert("Passwords do not match.");
+    if (form.password.value !== form.confirm_password.value) {
+        showMessage('Passwords do not match.', true);
+        form.confirm_password.focus();
         return;
     }
 
-    fetch('../backend/auth/register.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ full_name: fullName, email: email, password: password })
+    postJson('../backend/auth/register.php', {
+        full_name: form.full_name.value,
+        email: form.email.value,
+        password: form.password.value
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("Registered successfully!");
-            window.location.href = "login.html";
-        } else {
-            alert("Error: " + data.error);
-        }
-    })
-    .catch(error => console.error("Something went wrong:", error));
+        .then(data => {
+            if (data.success) {
+                window.location.href = 'login.html?registered=1';
+            } else {
+                showMessage(data.error, true);
+            }
+        })
+        .catch(() => showMessage('Something went wrong. Please try again.', true));
 });

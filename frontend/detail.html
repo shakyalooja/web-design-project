@@ -3,23 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trip Detail</title>
+    <meta name="description" content="Destinations, activities, costs and sharing for one trip.">
+    <title>Trip Detail - TripPlanner</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
     <header class="site-header">
-        <a href="dashboard.html" class="brand"><span class="brand-icon">🧭</span> TripPlanner</a>
-        <nav>
+        <a href="dashboard.html" class="brand">TripPlanner</a>
+        <nav aria-label="Main">
             <a href="dashboard.html" class="btn-link">Back to Dashboard</a>
             <button id="logoutBtn" class="btn-secondary">Logout</button>
         </nav>
     </header>
 
-    <main class="page-container">
+    <main id="main" class="page-container">
         <h1 id="tripNameHeading">Trip Name Here</h1>
         <p id="tripDates" class="muted"></p>
 
         <p class="total-cost">Total Estimated Cost: <strong id="totalCost">$0.00</strong></p>
+        <p id="budgetLine" aria-live="polite"></p>
 
         <div class="actions">
             <button id="editTripBtn" class="btn-secondary">Edit Trip</button>
@@ -28,15 +31,20 @@
         </div>
         <p id="message" role="status" aria-live="polite"></p>
 
+        <section class="card" aria-labelledby="breakdownHeading">
+            <h2 id="breakdownHeading">Cost breakdown</h2>
+            <ul id="breakdownList" class="breakdown-list"></ul>
+        </section>
+
         <h2>Destinations</h2>
         <div id="destinationList">
             <p>Destinations will appear here.</p>
         </div>
 
-        <h3>Add a Destination</h3>
+        <h2>Add a Destination</h2>
         <form id="destinationForm">
             <label for="locationName">Location Name:</label>
-            <input type="text" name="location_name" id="locationName" required>
+            <input type="text" name="location_name" id="locationName" required maxlength="150">
 
             <label for="arrivalDate">Arrival Date:</label>
             <input type="date" name="arrival_date" id="arrivalDate">
@@ -45,7 +53,7 @@
             <input type="date" name="departure_date" id="departureDate">
 
             <label for="notes">Notes:</label>
-            <textarea name="notes" id="notes"></textarea>
+            <textarea name="notes" id="notes" maxlength="2000"></textarea>
 
             <button type="submit">Add Destination</button>
         </form>
@@ -55,22 +63,16 @@
             <p>Activities will appear here.</p>
         </div>
 
-        <h3>Add an Activity</h3>
+        <h2>Add an Activity</h2>
         <form id="activityForm">
             <label for="activityDestination">Destination:</label>
             <select name="destination_id" id="activityDestination"></select>
 
             <label for="activityName">Activity Name:</label>
-            <input type="text" name="activity_name" id="activityName" required>
+            <input type="text" name="activity_name" id="activityName" required maxlength="150">
 
             <label for="category">Category:</label>
-            <select name="category" id="category">
-                <option value="transport">Transport</option>
-                <option value="accommodation">Accommodation</option>
-                <option value="food">Food</option>
-                <option value="sightseeing">Sightseeing</option>
-                <option value="other">Other</option>
-            </select>
+            <select name="category" id="category"></select>
 
             <label for="estimatedCost">Estimated Cost ($):</label>
             <input type="number" name="estimated_cost" id="estimatedCost" step="0.01" min="0" value="0">

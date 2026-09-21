@@ -2,35 +2,55 @@
 require '../config/db.php';
 header('Content-Type: application/json');
 
-$trip_id = $_GET['trip_id'] ?? null;
+$code = $_GET['code'] ?? '';
 
-if (!$trip_id) {
-    http_response_code(400);
-    echo json_encode(["success" => false, "error" => "trip_id is required."]);
-    exit;
+if (!preg_match('/^[a-f0-9]{16,32}$/', $code)) {
+    fail(404, "Trip not found or not shared.");
 }
 
-// Only return the trip if it's actually marked as shared
-$stmt = $pdo->prepare("SELECT trip_id, trip_name, start_date, end_date FROM trips WHERE trip_id = ? AND is_shared = 1");
-$stmt->execute([$trip_id]);
+$stmt = $pdo->prepare("SELECT trip_id, trip_name, start_date, end_date FROM trips WHERE share_code = ? AND is_shared = 1");
+$stmt->execute([$code]);
 $trip = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$trip) {
-    http_response_code(404);
-    echo json_encode(["success" => false, "error" => "Trip not found or not shared."]);
-    exit;
+    fail(404, "Trip not found or not shared.");
 }
 
-$destStmt = $pdo->prepare("SELECT * FROM destinations WHERE trip_id = ? ORDER BY destination_id ASC");
-$destStmt->execute([$trip_id]);
-$destinations = $destStmt->fetchAll(PDO::FETCH_ASSOC);
+$rows = $pdo->prepare("
+    SELECT d.destination_id, d.location_name, d.arrival_date, d.departure_date, d.notes,
+           a.activity_name, a.category, a.estimated_cost
+    FROM destinations d
+    LEFT JOIN activities a ON a.destination_id = d.destination_id
+    WHERE d.trip_id = ?
+    ORDER BY d.destination_id ASC, a.activity_id ASC
+");
+$rows->execute([$trip['trip_id']]);
 
-// Attach each destination's activities
-foreach ($destinations as &$dest) {
-    $actStmt = $pdo->prepare("SELECT activity_name, category, estimated_cost FROM activities WHERE destination_id = ?");
-    $actStmt->execute([$dest['destination_id']]);
-    $dest['activities'] = $actStmt->fetchAll(PDO::FETCH_ASSOC);
+$destinations = [];
+foreach ($rows->fetchAll(PDO::FETCH_ASSOC) as $row) {
+    $id = $row['destination_id'];
+    if (!isset($destinations[$id])) {
+        $destinations[$id] = [
+            "location_name" => $row['location_name'],
+            "arrival_date" => $row['arrival_date'],
+            "departure_date" => $row['departure_date'],
+            "notes" => $row['notes'],
+            "activities" => []
+        ];
+    }
+    if ($row['activity_name'] !== null) {
+        $destinations[$id]['activities'][] = [
+            "activity_name" => $row['activity_name'],
+            "category" => $row['category'],
+            "estimated_cost" => (float)$row['estimated_cost']
+        ];
+    }
 }
 
-echo json_encode(["success" => true, "trip" => $trip, "destinations" => $destinations]);
+[$total, $by_category] = trip_costs($pdo, $trip['trip_id']);
+unset($trip['trip_id']);
+$trip['total_cost'] = $total;
+$trip['cost_by_category'] = $by_category;
+
+echo json_encode(["success" => true, "trip" => $trip, "destinations" => array_values($destinations)]);
 ?>

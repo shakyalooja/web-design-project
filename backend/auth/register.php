@@ -2,16 +2,17 @@
 require '../config/db.php';
 header('Content-Type: application/json');
 
-$data = json_decode(file_get_contents("php://input"), true);
+$data = read_json();
 
-$full_name = trim($data['full_name'] ?? '');
-$email = trim($data['email'] ?? '');
-$password = $data['password'] ?? '';
+$full_name = clean_text($data['full_name'] ?? '', "Full name", 100);
+$email = strtolower(clean_text($data['email'] ?? '', "Email", 255));
+$password = (string)($data['password'] ?? '');
 
-if (!$full_name || !$email || !$password) {
-    http_response_code(400);
-    echo json_encode(["success" => false, "error" => "All fields are required."]);
-    exit;
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    fail(400, "Please enter a valid email address.");
+}
+if (strlen($password) < 8 || strlen($password) > 72) {
+    fail(400, "Password must be 8 to 72 characters.");
 }
 
 $password_hash = password_hash($password, PASSWORD_DEFAULT);
@@ -22,7 +23,6 @@ try {
 
     echo json_encode(["success" => true, "user_id" => $pdo->lastInsertId()]);
 } catch (PDOException $e) {
-    http_response_code(409);
-    echo json_encode(["success" => false, "error" => "That email is already registered."]);
+    fail(409, "That email is already registered.");
 }
 ?>

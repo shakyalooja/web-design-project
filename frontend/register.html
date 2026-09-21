@@ -1,44 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create a free TripPlanner account to plan trips.">
+    <title>Register - TripPlanner</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
     <header class="site-header">
         <a href="index.html" class="brand">TripPlanner</a>
     </header>
 
-    <div class="auth-page-wrapper">
+    <main id="main" class="auth-page-wrapper">
         <div class="auth-container">
             <h1>Register</h1>
+            <p id="message" role="alert"></p>
 
             <form id="registerForm">
                 <label for="fullName">Full Name:</label>
-                <input type="text" name="full_name" id="fullName">
-                <br><br>
+                <input type="text" name="full_name" id="fullName" required maxlength="100" autocomplete="name">
 
                 <label for="regEmail">Email:</label>
-                <input type="email" name="email" id="regEmail">
-                <br><br>
+                <input type="email" name="email" id="regEmail" required maxlength="255" autocomplete="email">
 
                 <label for="regPassword">Password:</label>
-                <input type="password" name="password" id="regPassword">
-                <br><br>
+                <input type="password" name="password" id="regPassword" required minlength="8" maxlength="72" autocomplete="new-password" aria-describedby="pwHint">
+                <small id="pwHint" class="muted">At least 8 characters.</small>
 
                 <label for="confirmPassword">Confirm Password:</label>
-                <input type="password" name="confirm_password" id="confirmPassword">
-                <br><br>
+                <input type="password" name="confirm_password" id="confirmPassword" required autocomplete="new-password">
 
                 <button type="submit">Register</button>
             </form>
 
             <p>Already have an account? <a href="login.html">Login here</a></p>
         </div>
-    </div>
+    </main>
 
+    <script src="js/common.js"></script>
     <script src="js/register.js"></script>
 </body>
 </html>

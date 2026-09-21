@@ -24,9 +24,13 @@ CREATE TABLE trips (
     trip_name VARCHAR(150) NOT NULL,
     start_date DATE NULL,
     end_date DATE NULL,
+    budget DECIMAL(10,2) NULL,
     is_shared TINYINT(1) NOT NULL DEFAULT 0,
+    share_code VARCHAR(32) NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    CONSTRAINT chk_trip_dates CHECK (start_date IS NULL OR end_date IS NULL OR end_date >= start_date),
+    CONSTRAINT chk_trip_budget CHECK (budget IS NULL OR budget >= 0)
 ) ENGINE=InnoDB;
 
 CREATE TABLE destinations (
@@ -36,7 +40,8 @@ CREATE TABLE destinations (
     arrival_date DATE NULL,
     departure_date DATE NULL,
     notes TEXT,
-    FOREIGN KEY (trip_id) REFERENCES trips(trip_id) ON DELETE CASCADE
+    FOREIGN KEY (trip_id) REFERENCES trips(trip_id) ON DELETE CASCADE,
+    CONSTRAINT chk_dest_dates CHECK (arrival_date IS NULL OR departure_date IS NULL OR departure_date >= arrival_date)
 ) ENGINE=InnoDB;
 
 CREATE TABLE activities (
@@ -45,7 +50,9 @@ CREATE TABLE activities (
     activity_name VARCHAR(150) NOT NULL,
     category VARCHAR(30) NOT NULL DEFAULT 'other',
     estimated_cost DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    FOREIGN KEY (destination_id) REFERENCES destinations(destination_id) ON DELETE CASCADE
+    FOREIGN KEY (destination_id) REFERENCES destinations(destination_id) ON DELETE CASCADE,
+    CONSTRAINT chk_activity_category CHECK (category IN ('flight','accommodation','transport','food','sightseeing','other')),
+    CONSTRAINT chk_activity_cost CHECK (estimated_cost >= 0)
 ) ENGINE=InnoDB;
 
 CREATE TABLE featured_places (
@@ -70,9 +77,9 @@ INSERT INTO featured_places (place_name, country, description, image_url) VALUES
 INSERT INTO users (user_id, full_name, email, password_hash) VALUES
 (1, 'Demo Traveller', 'demo@example.com', '$2y$12$qfcB50n4cY5qPiKSlKuaeOUfFApFgpJN.QIiawjVoFQr1aPAwVzdG');
 
-INSERT INTO trips (trip_id, user_id, trip_name, start_date, end_date, is_shared) VALUES
-(1, 1, 'Japan Autumn Trip', '2026-11-05', '2026-11-14', 1),
-(2, 1, 'Melbourne Weekend', '2026-10-16', '2026-10-18', 0);
+INSERT INTO trips (trip_id, user_id, trip_name, start_date, end_date, budget, is_shared, share_code) VALUES
+(1, 1, 'Japan Autumn Trip', '2026-11-05', '2026-11-14', 4500.00, 1, 'a1b2c3d4e5f60718293a4b5c'),
+(2, 1, 'Melbourne Weekend', '2026-10-16', '2026-10-18', 500.00, 0, NULL);
 
 INSERT INTO destinations (destination_id, trip_id, location_name, arrival_date, departure_date, notes) VALUES
 (1, 1, 'Tokyo', '2026-11-05', '2026-11-09', 'Stay near Shinjuku station. Buy a Suica card at the airport.'),
@@ -81,7 +88,7 @@ INSERT INTO destinations (destination_id, trip_id, location_name, arrival_date, 
 (4, 2, 'Melbourne CBD', '2026-10-16', '2026-10-18', 'Trams are free inside the city centre.');
 
 INSERT INTO activities (destination_id, activity_name, category, estimated_cost) VALUES
-(1, 'Flight Sydney to Tokyo', 'transport', 1250.00),
+(1, 'Flight Sydney to Tokyo', 'flight', 1250.00),
 (1, 'Hotel in Shinjuku (4 nights)', 'accommodation', 720.00),
 (1, 'teamLab Planets', 'sightseeing', 45.00),
 (1, 'Sushi dinner', 'food', 80.00),
@@ -89,7 +96,7 @@ INSERT INTO activities (destination_id, activity_name, category, estimated_cost)
 (2, 'Ryokan (3 nights)', 'accommodation', 540.00),
 (2, 'Fushimi Inari Shrine', 'sightseeing', 0.00),
 (3, 'Dotonbori street food', 'food', 60.00),
-(3, 'Flight Osaka to Sydney', 'transport', 980.00),
-(4, 'Flight Sydney to Melbourne', 'transport', 180.00),
+(3, 'Flight Osaka to Sydney', 'flight', 980.00),
+(4, 'Flight Sydney to Melbourne', 'flight', 180.00),
 (4, 'Hotel in the CBD (2 nights)', 'accommodation', 320.00),
 (4, 'Queen Victoria Market', 'food', 40.00);

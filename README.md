@@ -14,6 +14,8 @@ Open http://localhost:8080/index.html
 
 Demo login: `demo@example.com` / `demo1234`
 
+Demo shared trip: http://localhost:8080/shared-trip.html?code=a1b2c3d4e5f60718293a4b5c
+
 ## Stop
 
 ```
@@ -21,6 +23,8 @@ docker compose down
 ```
 
 ## Reset the database
+
+Run this after any change to `database/trip_planner.sql`. The database is only created the first time.
 
 ```
 docker compose down -v
