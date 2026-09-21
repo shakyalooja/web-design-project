@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>My Trips</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="dashboard.html" class="brand"><span class="brand-icon">🧭</span> TripPlanner</a>
+        <nav>
+            <button id="logoutBtn" class="btn-secondary">Logout</button>
+        </nav>
+    </header>
+
+    <main class="page-container">
+        <h1>My Trips</h1>
+
+        <h2>Featured Destinations</h2>
+        <div class="carousel">
+            <button class="carousel-btn" id="prevBtn">&#10094;</button>
+            <div class="carousel-track-container">
+                <div class="carousel-track" id="carouselTrack">
+                    <p>Loading...</p>
+                </div>
+            </div>
+            <button class="carousel-btn" id="nextBtn">&#10095;</button>
+        </div>
+
+        <button id="newTripBtn" type="button">+ New Trip</button>
+        <p id="message" role="status" aria-live="polite"></p>
+
+        <div id="tripList">
+            <p>Trip cards will appear here.</p>
+        </div>
+
+        <h2 id="addTripHeading">Add a Trip</h2>
+        <form id="tripForm" aria-labelledby="addTripHeading">
+            <label for="tripName">Trip Name:</label>
+            <input type="text" name="trip_name" id="tripName" required>
+
+            <label for="startDate">Start Date:</label>
+            <input type="date" name="start_date" id="startDate">
+
+            <label for="endDate">End Date:</label>
+            <input type="date" name="end_date" id="endDate">
+
+            <button type="submit">Save Trip</button>
+        </form>
+    </main>
+
+    <script src="js/common.js"></script>
+    <script src="js/carousel.js"></script>
+    <script src="js/auth-check.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

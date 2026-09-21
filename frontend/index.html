@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>TripPlanner — Plan Your Next Adventure</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="index.html" class="brand">TripPlanner</a>
+        <nav>
+            <a href="login.html"><button class="btn-secondary">Login</button></a>
+            <a href="register.html"><button>Register</button></a>
+        </nav>
+    </header>
+
+    <div class="home-hero">
+        <h1>Plan your next trip, all in one place</h1>
+        <p>Create itineraries, organise destinations, track costs, and share your travel plans with anyone.</p>
+        <a href="register.html"><button class="btn-large">Get Started — It's Free</button></a>
+    </div>
+
+    <div class="home-section">
+        <h2>Popular Destinations</h2>
+        <div class="carousel">
+            <button class="carousel-btn" id="prevBtn">&#10094;</button>
+            <div class="carousel-track-container">
+                <div class="carousel-track" id="carouselTrack">
+                    <p>Loading...</p>
+                </div>
+            </div>
+            <button class="carousel-btn" id="nextBtn">&#10095;</button>
+        </div>
+    </div>
+
+    <div class="home-section">
+        <h2>Everything you need to plan a trip</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🗺️</div>
+                <h3>Build Itineraries</h3>
+                <p>Add destinations and activities, organised by date, so your whole trip lives in one place.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Track Costs</h3>
+                <p>See your estimated spending update automatically as you add activities and accommodation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔗</div>
+                <h3>Share Your Plans</h3>
+                <p>Generate a read-only link to your trip so friends and family can see the itinerary instantly.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Private by Default</h3>
+                <p>Your trips are only visible to you unless you choose to share them.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="home-footer">
+        <p>TripPlanner — built for ICT502 Assessment 3</p>
+    </footer>
+
+    <script src="js/common.js"></script>
+    <script src="js/carousel.js"></script>
+</body>
+</html>

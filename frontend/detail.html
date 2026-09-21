@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Detail</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <a href="dashboard.html" class="brand"><span class="brand-icon">🧭</span> TripPlanner</a>
+        <nav>
+            <a href="dashboard.html" class="btn-link">Back to Dashboard</a>
+            <button id="logoutBtn" class="btn-secondary">Logout</button>
+        </nav>
+    </header>
+
+    <main class="page-container">
+        <h1 id="tripNameHeading">Trip Name Here</h1>
+        <p id="tripDates" class="muted"></p>
+
+        <p class="total-cost">Total Estimated Cost: <strong id="totalCost">$0.00</strong></p>
+
+        <div class="actions">
+            <button id="editTripBtn" class="btn-secondary">Edit Trip</button>
+            <button id="shareTripBtn" class="btn-secondary">Share Trip</button>
+            <button id="deleteTripBtn" class="btn-danger">Delete Trip</button>
+        </div>
+        <p id="message" role="status" aria-live="polite"></p>
+
+        <h2>Destinations</h2>
+        <div id="destinationList">
+            <p>Destinations will appear here.</p>
+        </div>
+
+        <h3>Add a Destination</h3>
+        <form id="destinationForm">
+            <label for="locationName">Location Name:</label>
+            <input type="text" name="location_name" id="locationName" required>
+
+            <label for="arrivalDate">Arrival Date:</label>
+            <input type="date" name="arrival_date" id="arrivalDate">
+
+            <label for="departureDate">Departure Date:</label>
+            <input type="date" name="departure_date" id="departureDate">
+
+            <label for="notes">Notes:</label>
+            <textarea name="notes" id="notes"></textarea>
+
+            <button type="submit">Add Destination</button>
+        </form>
+
+        <h2>Activities</h2>
+        <div id="activityList">
+            <p>Activities will appear here.</p>
+        </div>
+
+        <h3>Add an Activity</h3>
+        <form id="activityForm">
+            <label for="activityDestination">Destination:</label>
+            <select name="destination_id" id="activityDestination"></select>
+
+            <label for="activityName">Activity Name:</label>
+            <input type="text" name="activity_name" id="activityName" required>
+
+            <label for="category">Category:</label>
+            <select name="category" id="category">
+                <option value="transport">Transport</option>
+                <option value="accommodation">Accommodation</option>
+                <option value="food">Food</option>
+                <option value="sightseeing">Sightseeing</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="estimatedCost">Estimated Cost ($):</label>
+            <input type="number" name="estimated_cost" id="estimatedCost" step="0.01" min="0" value="0">
+
+            <button type="submit">Add Activity</button>
+        </form>
+    </main>
+
+    <script src="js/common.js"></script>
+    <script src="js/auth-check.js"></script>
+    <script src="js/detail.js"></script>
+</body>
+</html>
