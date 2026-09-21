@@ -1,24 +1,39 @@
 const tripId = new URLSearchParams(window.location.search).get('trip_id');
 let currentTrip = null;
 
-const messageEl = document.getElementById('message');
-
-function showMessage(text, isError = false) {
-    messageEl.textContent = text;
-    messageEl.className = isError ? 'msg-error' : 'msg-ok';
-}
-
 if (!tripId) {
     window.location.href = 'dashboard.html';
 }
 
-function formatDates(start, end) {
-    if (!start && !end) return 'No dates set';
-    return `${start || '?'} to ${end || '?'}`;
+document.getElementById('category').innerHTML =
+    CATEGORIES.map(([value, label]) => `<option value="${value}">${label}</option>`).join('');
+
+function renderTrip(trip) {
+    document.title = `${trip.trip_name} - TripPlanner`;
+    document.getElementById('tripNameHeading').textContent = trip.trip_name;
+    document.getElementById('tripDates').textContent = formatDates(trip.start_date, trip.end_date);
+    document.getElementById('totalCost').textContent = money(trip.total_cost);
+    document.getElementById('shareTripBtn').textContent = Number(trip.is_shared) ? 'Shared - manage link' : 'Share Trip';
+    renderBreakdown(document.getElementById('breakdownList'), trip.cost_by_category, trip.total_cost);
+
+    const line = document.getElementById('budgetLine');
+    if (trip.budget === null) {
+        line.className = 'muted';
+        line.textContent = 'No budget set. Use Edit Trip to add one.';
+        return;
+    }
+    const diff = Number(trip.budget) - Number(trip.total_cost);
+    if (diff < 0) {
+        line.className = 'msg-error';
+        line.textContent = `Over budget by ${money(-diff)} (budget ${money(trip.budget)}).`;
+    } else {
+        line.className = 'msg-ok';
+        line.textContent = `Budget ${money(trip.budget)}: ${money(diff)} left.`;
+    }
 }
 
 function loadTripInfo() {
-    fetch(`../backend/trips/get_trip.php?trip_id=${encodeURIComponent(tripId)}`)
+    return fetch(`../backend/trips/get_trip.php?trip_id=${encodeURIComponent(tripId)}`)
         .then(response => response.json())
         .then(data => {
             if (!data.success) {
@@ -26,35 +41,30 @@ function loadTripInfo() {
                 return;
             }
             currentTrip = data.trip;
-            document.title = `${data.trip.trip_name} - TripPlanner`;
-            document.getElementById('tripNameHeading').textContent = data.trip.trip_name;
-            document.getElementById('tripDates').textContent = formatDates(data.trip.start_date, data.trip.end_date);
-            document.getElementById('totalCost').textContent = `$${Number(data.trip.total_cost).toFixed(2)}`;
+            renderTrip(currentTrip);
         })
         .catch(error => console.error('Something went wrong:', error));
 }
 
 document.getElementById('editTripBtn').addEventListener('click', () => {
     if (!currentTrip) return;
-    const name = prompt('Trip name:', currentTrip.trip_name);
-    if (name === null) return;
-    const start = prompt('Start date (YYYY-MM-DD, or empty):', currentTrip.start_date ?? '');
-    if (start === null) return;
-    const end = prompt('End date (YYYY-MM-DD, or empty):', currentTrip.end_date ?? '');
-    if (end === null) return;
-
-    postJson('../backend/trips/update_trip.php', {
-        trip_id: tripId, trip_name: name, start_date: start, end_date: end
-    })
-        .then(data => {
-            if (data.success) {
-                showMessage('Trip updated.');
-                loadTripInfo();
-            } else {
-                showMessage(data.error, true);
-            }
-        })
-        .catch(error => console.error('Something went wrong:', error));
+    openFormDialog({
+        title: 'Edit trip',
+        fields: [
+            { name: 'trip_name', label: 'Trip name', value: currentTrip.trip_name, required: true, maxlength: 150 },
+            { name: 'start_date', label: 'Start date', type: 'date', value: currentTrip.start_date ?? '' },
+            { name: 'end_date', label: 'End date', type: 'date', value: currentTrip.end_date ?? '' },
+            { name: 'budget', label: 'Budget ($, optional)', type: 'number', value: currentTrip.budget ?? '', min: 0, step: '0.01' }
+        ],
+        onSubmit: values => postJson('../backend/trips/update_trip.php', { trip_id: tripId, ...values })
+            .then(data => {
+                if (data.success) {
+                    showMessage('Trip updated.');
+                    loadTripInfo();
+                }
+                return data;
+            })
+    });
 });
 
 document.getElementById('deleteTripBtn').addEventListener('click', () => {
@@ -67,24 +77,69 @@ document.getElementById('deleteTripBtn').addEventListener('click', () => {
                 showMessage(data.error, true);
             }
         })
-        .catch(error => console.error('Something went wrong:', error));
+        .catch(() => showMessage('Something went wrong. Please try again.', true));
 });
 
 document.getElementById('shareTripBtn').addEventListener('click', () => {
-    postJson('../backend/trips/toggle_share.php', { trip_id: tripId })
-        .then(data => {
-            if (!data.success) {
-                showMessage(data.error, true);
-                return;
-            }
-            if (data.is_shared) {
-                const shareUrl = new URL(`shared-trip.html?trip_id=${tripId}`, window.location.href).href;
-                prompt('Trip is now shared! Copy this link:', shareUrl);
-            } else {
-                showMessage('Trip is no longer shared.');
-            }
-        })
-        .catch(error => console.error('Something went wrong:', error));
+    if (!currentTrip) return;
+    const { dialog, body } = createDialog('Share this trip');
+
+    function render() {
+        if (Number(currentTrip.is_shared)) {
+            const link = new URL(`shared-trip.html?code=${currentTrip.share_code}`, window.location.href).href;
+            body.innerHTML = `
+                <p>Anyone with this link can view this trip. They cannot change it.</p>
+                <label for="shareLink">Share link</label>
+                <input type="text" id="shareLink" readonly value="${esc(link)}">
+                <p id="copyStatus" role="status" class="msg-ok"></p>
+                <div class="modal-actions">
+                    <button type="button" data-act="copy">Copy link</button>
+                    <button type="button" class="btn-danger" data-act="toggle">Stop sharing</button>
+                    <button type="button" class="btn-secondary" data-act="close">Close</button>
+                </div>`;
+        } else {
+            body.innerHTML = `
+                <p>This trip is private. Create a link to let other people view it.</p>
+                <p id="copyStatus" role="status" class="msg-error"></p>
+                <div class="modal-actions">
+                    <button type="button" data-act="toggle">Create share link</button>
+                    <button type="button" class="btn-secondary" data-act="close">Close</button>
+                </div>`;
+        }
+        body.querySelector('[data-act]').focus();
+    }
+
+    function setStatus(text) {
+        body.querySelector('#copyStatus').textContent = text;
+    }
+
+    body.addEventListener('click', event => {
+        const act = event.target.dataset.act;
+        if (act === 'close') {
+            dialog.close();
+        } else if (act === 'copy') {
+            const input = body.querySelector('#shareLink');
+            input.select();
+            (navigator.clipboard ? navigator.clipboard.writeText(input.value) : Promise.reject())
+                .then(() => setStatus('Link copied.'))
+                .catch(() => setStatus('Press Ctrl+C to copy the selected link.'));
+        } else if (act === 'toggle') {
+            postJson('../backend/trips/toggle_share.php', { trip_id: tripId })
+                .then(data => {
+                    if (!data.success) {
+                        setStatus(data.error);
+                        return;
+                    }
+                    currentTrip.is_shared = data.is_shared;
+                    currentTrip.share_code = data.share_code;
+                    renderTrip(currentTrip);
+                    render();
+                })
+                .catch(() => setStatus('Something went wrong. Please try again.'));
+        }
+    });
+
+    render();
 });
 
 document.getElementById('destinationForm').addEventListener('submit', event => {
@@ -107,7 +162,7 @@ document.getElementById('destinationForm').addEventListener('submit', event => {
                 showMessage(data.error, true);
             }
         })
-        .catch(error => console.error('Something went wrong:', error));
+        .catch(() => showMessage('Something went wrong. Please try again.', true));
 });
 
 function loadDestinations() {
@@ -137,14 +192,14 @@ function loadDestinations() {
                 const div = document.createElement('div');
                 div.className = 'card';
                 div.innerHTML = `
-                    <h4>${esc(dest.location_name)}</h4>
+                    <h3>${esc(dest.location_name)}</h3>
                     <p>${esc(formatDates(dest.arrival_date, dest.departure_date))}</p>
                     <p>${esc(dest.notes)}</p>
                     <button class="btn-secondary" data-action="edit">Edit</button>
                     <button class="btn-danger" data-action="delete">Delete</button>
                 `;
                 div.querySelector('[data-action="edit"]').addEventListener('click', () => editDestination(dest));
-                div.querySelector('[data-action="delete"]').addEventListener('click', () => deleteDestination(dest.destination_id));
+                div.querySelector('[data-action="delete"]').addEventListener('click', () => deleteDestination(dest));
                 list.appendChild(div);
 
                 const option = document.createElement('option');
@@ -162,35 +217,26 @@ function loadDestinations() {
 }
 
 function editDestination(dest) {
-    const name = prompt('Location name:', dest.location_name);
-    if (name === null) return;
-    const arrival = prompt('Arrival date (YYYY-MM-DD, or empty):', dest.arrival_date ?? '');
-    if (arrival === null) return;
-    const departure = prompt('Departure date (YYYY-MM-DD, or empty):', dest.departure_date ?? '');
-    if (departure === null) return;
-    const notes = prompt('Notes:', dest.notes ?? '');
-    if (notes === null) return;
-
-    postJson('../backend/destinations/update_destination.php', {
-        destination_id: dest.destination_id,
-        location_name: name,
-        arrival_date: arrival,
-        departure_date: departure,
-        notes: notes
-    })
-        .then(data => {
-            if (data.success) {
-                loadDestinations();
-            } else {
-                showMessage(data.error, true);
-            }
+    openFormDialog({
+        title: 'Edit destination',
+        fields: [
+            { name: 'location_name', label: 'Location name', value: dest.location_name, required: true, maxlength: 150 },
+            { name: 'arrival_date', label: 'Arrival date', type: 'date', value: dest.arrival_date ?? '' },
+            { name: 'departure_date', label: 'Departure date', type: 'date', value: dest.departure_date ?? '' },
+            { name: 'notes', label: 'Notes', type: 'textarea', value: dest.notes ?? '', maxlength: 2000 }
+        ],
+        onSubmit: values => postJson('../backend/destinations/update_destination.php', {
+            destination_id: dest.destination_id, ...values
+        }).then(data => {
+            if (data.success) loadDestinations();
+            return data;
         })
-        .catch(error => console.error('Something went wrong:', error));
+    });
 }
 
-function deleteDestination(destId) {
-    if (!confirm('Delete this destination and its activities?')) return;
-    postJson('../backend/destinations/delete_destination.php', { destination_id: destId })
+function deleteDestination(dest) {
+    if (!confirm(`Delete "${dest.location_name}" and its activities?`)) return;
+    postJson('../backend/destinations/delete_destination.php', { destination_id: dest.destination_id })
         .then(data => {
             if (data.success) {
                 loadDestinations();
@@ -199,7 +245,7 @@ function deleteDestination(destId) {
                 showMessage(data.error, true);
             }
         })
-        .catch(error => console.error('Something went wrong:', error));
+        .catch(() => showMessage('Something went wrong. Please try again.', true));
 }
 
 document.getElementById('activityForm').addEventListener('submit', event => {
@@ -228,7 +274,7 @@ document.getElementById('activityForm').addEventListener('submit', event => {
                 showMessage(data.error, true);
             }
         })
-        .catch(error => console.error('Something went wrong:', error));
+        .catch(() => showMessage('Something went wrong. Please try again.', true));
 });
 
 function loadActivities() {
@@ -257,14 +303,14 @@ function loadActivities() {
                 const div = document.createElement('div');
                 div.className = 'card';
                 div.innerHTML = `
-                    <h4>${esc(act.activity_name)}</h4>
-                    <p>Category: ${esc(act.category)}</p>
-                    <p>Cost: $${Number(act.estimated_cost).toFixed(2)}</p>
+                    <h3>${esc(act.activity_name)}</h3>
+                    <p>Category: ${esc(categoryLabel(act.category))}</p>
+                    <p>Cost: ${money(act.estimated_cost)}</p>
                     <button class="btn-secondary" data-action="edit">Edit</button>
                     <button class="btn-danger" data-action="delete">Delete</button>
                 `;
                 div.querySelector('[data-action="edit"]').addEventListener('click', () => editActivity(act));
-                div.querySelector('[data-action="delete"]').addEventListener('click', () => deleteActivity(act.activity_id));
+                div.querySelector('[data-action="delete"]').addEventListener('click', () => deleteActivity(act));
                 list.appendChild(div);
             });
         })
@@ -272,33 +318,28 @@ function loadActivities() {
 }
 
 function editActivity(act) {
-    const name = prompt('Activity name:', act.activity_name);
-    if (name === null) return;
-    const category = prompt('Category (transport/accommodation/food/sightseeing/other):', act.category ?? '');
-    if (category === null) return;
-    const cost = prompt('Estimated cost:', act.estimated_cost);
-    if (cost === null) return;
-
-    postJson('../backend/activities/update_activity.php', {
-        activity_id: act.activity_id,
-        activity_name: name,
-        category: category,
-        estimated_cost: cost
-    })
-        .then(data => {
+    openFormDialog({
+        title: 'Edit activity',
+        fields: [
+            { name: 'activity_name', label: 'Activity name', value: act.activity_name, required: true, maxlength: 150 },
+            { name: 'category', label: 'Category', type: 'select', value: act.category, options: CATEGORIES },
+            { name: 'estimated_cost', label: 'Estimated cost ($)', type: 'number', value: act.estimated_cost, min: 0, step: '0.01' }
+        ],
+        onSubmit: values => postJson('../backend/activities/update_activity.php', {
+            activity_id: act.activity_id, ...values
+        }).then(data => {
             if (data.success) {
                 loadActivities();
                 loadTripInfo();
-            } else {
-                showMessage(data.error, true);
             }
+            return data;
         })
-        .catch(error => console.error('Something went wrong:', error));
+    });
 }
 
-function deleteActivity(activityId) {
-    if (!confirm('Delete this activity?')) return;
-    postJson('../backend/activities/delete_activity.php', { activity_id: activityId })
+function deleteActivity(act) {
+    if (!confirm(`Delete "${act.activity_name}"?`)) return;
+    postJson('../backend/activities/delete_activity.php', { activity_id: act.activity_id })
         .then(data => {
             if (data.success) {
                 loadActivities();
@@ -307,7 +348,7 @@ function deleteActivity(activityId) {
                 showMessage(data.error, true);
             }
         })
-        .catch(error => console.error('Something went wrong:', error));
+        .catch(() => showMessage('Something went wrong. Please try again.', true));
 }
 
 document.getElementById('activityDestination').addEventListener('change', loadActivities);

@@ -1,17 +1,20 @@
 <?php
 require '../config/db.php';
 header('Content-Type: application/json');
-session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    http_response_code(401);
-    echo json_encode(["success" => false, "error" => "You must be logged in."]);
-    exit;
-}
+$user_id = require_login();
 
-$user_id = $_SESSION['user_id'];
-
-$stmt = $pdo->prepare("SELECT * FROM trips WHERE user_id = ? ORDER BY created_at DESC");
+$stmt = $pdo->prepare("
+    SELECT t.trip_id, t.trip_name, t.start_date, t.end_date, t.budget, t.is_shared,
+        (SELECT COUNT(*) FROM destinations d WHERE d.trip_id = t.trip_id) AS destination_count,
+        (SELECT COALESCE(SUM(a.estimated_cost), 0)
+            FROM activities a
+            JOIN destinations d ON a.destination_id = d.destination_id
+            WHERE d.trip_id = t.trip_id) AS total_cost
+    FROM trips t
+    WHERE t.user_id = ?
+    ORDER BY t.created_at DESC, t.trip_id DESC
+");
 $stmt->execute([$user_id]);
 $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

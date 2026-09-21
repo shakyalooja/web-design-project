@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Log in to TripPlanner to manage your trips.">
+    <title>Login - TripPlanner</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
     <header class="site-header">
         <a href="index.html" class="brand">TripPlanner</a>
     </header>
 
-    <div class="auth-page-wrapper">
+    <main id="main" class="auth-page-wrapper">
         <div class="auth-container">
             <h1>Login</h1>
+            <p id="message" role="alert"></p>
 
             <form id="loginForm">
                 <label for="loginEmail">Email:</label>
-                <input type="email" name="email" id="loginEmail">
-                <br><br>
+                <input type="email" name="email" id="loginEmail" required autocomplete="email">
 
                 <label for="loginPassword">Password:</label>
-                <input type="password" name="password" id="loginPassword">
-                <br><br>
+                <input type="password" name="password" id="loginPassword" required autocomplete="current-password">
 
                 <button type="submit">Login</button>
             </form>
 
             <p>Don't have an account? <a href="register.html">Register here</a></p>
         </div>
-    </div>
+    </main>
 
+    <script src="js/common.js"></script>
     <script src="js/login.js"></script>
 </body>
 </html>

@@ -1,22 +1,27 @@
-const urlParams = new URLSearchParams(window.location.search);
-const tripId = urlParams.get('trip_id');
+const code = new URLSearchParams(window.location.search).get('code');
+const heading = document.getElementById('tripNameHeading');
 
-if (!tripId) {
-    document.getElementById('tripNameHeading').textContent = "No trip specified.";
+if (!code) {
+    heading.textContent = 'No trip specified.';
 } else {
-    fetch(`../backend/trips/get_shared_trip.php?trip_id=${encodeURIComponent(tripId)}`)
+    fetch(`../backend/trips/get_shared_trip.php?code=${encodeURIComponent(code)}`)
         .then(response => response.json())
         .then(data => {
             if (!data.success) {
-                document.getElementById('tripNameHeading').textContent = "Trip not found or not shared.";
+                heading.textContent = 'Trip not found or not shared.';
                 return;
             }
 
-            document.getElementById('tripNameHeading').textContent = data.trip.trip_name;
-            document.getElementById('tripDates').textContent = `${data.trip.start_date ?? ''} to ${data.trip.end_date ?? ''}`;
+            const trip = data.trip;
+            document.title = `${trip.trip_name} - TripPlanner`;
+            heading.textContent = trip.trip_name;
+            document.getElementById('tripDates').textContent = formatDates(trip.start_date, trip.end_date);
+            document.getElementById('totalCost').textContent = money(trip.total_cost);
+            document.getElementById('totalLine').hidden = false;
+            document.getElementById('breakdownSection').hidden = false;
+            renderBreakdown(document.getElementById('breakdownList'), trip.cost_by_category, trip.total_cost);
 
             const destinationList = document.getElementById('destinationList');
-
             if (data.destinations.length === 0) {
                 destinationList.innerHTML = '<p>No destinations added yet.</p>';
                 return;
@@ -25,21 +30,20 @@ if (!tripId) {
             data.destinations.forEach(dest => {
                 const div = document.createElement('div');
                 div.className = 'card';
-                let activitiesHtml = '<p>No activities yet.</p>';
-                if (dest.activities.length > 0) {
-                    activitiesHtml = '<ul>' + dest.activities.map(act =>
-                        `<li>${esc(act.activity_name)} (${esc(act.category)}) - $${Number(act.estimated_cost).toFixed(2)}</li>`
+                const activitiesHtml = dest.activities.length === 0
+                    ? '<p>No activities yet.</p>'
+                    : '<ul>' + dest.activities.map(act =>
+                        `<li>${esc(act.activity_name)} (${esc(categoryLabel(act.category))}) - ${money(act.estimated_cost)}</li>`
                     ).join('') + '</ul>';
-                }
 
                 div.innerHTML = `
                     <h3>${esc(dest.location_name)}</h3>
-                    <p>${esc(dest.arrival_date ?? '?')} to ${esc(dest.departure_date ?? '?')}</p>
+                    <p>${esc(formatDates(dest.arrival_date, dest.departure_date))}</p>
                     <p>${esc(dest.notes)}</p>
                     ${activitiesHtml}
                 `;
                 destinationList.appendChild(div);
             });
         })
-        .catch(error => console.error("Something went wrong:", error));
+        .catch(error => console.error('Something went wrong:', error));
 }
