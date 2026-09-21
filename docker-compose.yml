@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      # Mount the local frontend directory to the container so that changes are reflected without rebuilding
+      - ./frontend:/usr/share/nginx/html
+    restart: unless-stopped
