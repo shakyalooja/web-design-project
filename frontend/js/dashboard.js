@@ -1,37 +1,34 @@
-document.getElementById('logoutBtn').addEventListener('click', function() {
-    fetch('../backend/auth/logout.php')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.href = "login.html";
-            }
-        })
-        .catch(error => console.error("Something went wrong:", error));
+const messageEl = document.getElementById('message');
+
+function showMessage(text, isError = false) {
+    messageEl.textContent = text;
+    messageEl.className = isError ? 'msg-error' : 'msg-ok';
+}
+
+document.getElementById('newTripBtn').addEventListener('click', () => {
+    document.getElementById('tripName').focus();
+    document.getElementById('tripForm').scrollIntoView({ behavior: 'smooth' });
 });
 
-document.getElementById('tripForm').addEventListener('submit', function(event) {
+document.getElementById('tripForm').addEventListener('submit', event => {
     event.preventDefault();
+    const form = event.target;
 
-    const tripName = document.getElementById('tripName').value;
-    const startDate = document.getElementById('startDate').value;
-    const endDate = document.getElementById('endDate').value;
-
-    fetch('../backend/trips/create_trip.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ trip_name: tripName, start_date: startDate, end_date: endDate })
+    postJson('../backend/trips/create_trip.php', {
+        trip_name: form.trip_name.value,
+        start_date: form.start_date.value,
+        end_date: form.end_date.value
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("Trip saved!");
-            document.getElementById('tripForm').reset();
-            loadTrips();
-        } else {
-            alert("Error: " + data.error);
-        }
-    })
-    .catch(error => console.error("Something went wrong:", error));
+        .then(data => {
+            if (data.success) {
+                showMessage('Trip saved.');
+                form.reset();
+                loadTrips();
+            } else {
+                showMessage(data.error, true);
+            }
+        })
+        .catch(error => console.error('Something went wrong:', error));
 });
 
 function loadTrips() {
@@ -41,8 +38,12 @@ function loadTrips() {
             const tripList = document.getElementById('tripList');
             tripList.innerHTML = '';
 
+            if (!data.success) {
+                showMessage(data.error, true);
+                return;
+            }
             if (data.trips.length === 0) {
-                tripList.innerHTML = '<p>No trips yet. Add one above.</p>';
+                tripList.innerHTML = '<p>No trips yet. Add one below.</p>';
                 return;
             }
 
@@ -50,58 +51,52 @@ function loadTrips() {
                 const div = document.createElement('div');
                 div.className = 'card';
                 div.innerHTML = `
-                    <h3>${trip.trip_name}</h3>
-                    <p>${trip.start_date ?? ''} to ${trip.end_date ?? ''}</p>
-                    <a href="detail.html?trip_id=${trip.trip_id}"><button type="button" class="btn-secondary">View</button></a>
-                    <button class="btn-secondary" onclick="editTrip(${trip.trip_id}, '${trip.trip_name}', '${trip.start_date ?? ''}', '${trip.end_date ?? ''}')">Edit</button>
-                    <button class="btn-secondary" onclick="deleteTrip(${trip.trip_id})">Delete</button>
+                    <h3>${esc(trip.trip_name)}</h3>
+                    <p>${esc(trip.start_date ?? '?')} to ${esc(trip.end_date ?? '?')}</p>
+                    <a href="detail.html?trip_id=${encodeURIComponent(trip.trip_id)}" class="btn-link">View</a>
+                    <button class="btn-secondary" data-action="edit">Edit</button>
+                    <button class="btn-danger" data-action="delete">Delete</button>
                 `;
+                div.querySelector('[data-action="edit"]').addEventListener('click', () => editTrip(trip));
+                div.querySelector('[data-action="delete"]').addEventListener('click', () => deleteTrip(trip.trip_id));
                 tripList.appendChild(div);
             });
         })
-        .catch(error => console.error("Something went wrong:", error));
+        .catch(error => console.error('Something went wrong:', error));
 }
 
-function editTrip(tripId, currentName, currentStart, currentEnd) {
-    const newName = prompt("Trip name:", currentName);
-    if (newName === null) return; // user clicked Cancel
+function editTrip(trip) {
+    const name = prompt('Trip name:', trip.trip_name);
+    if (name === null) return;
+    const start = prompt('Start date (YYYY-MM-DD, or empty):', trip.start_date ?? '');
+    if (start === null) return;
+    const end = prompt('End date (YYYY-MM-DD, or empty):', trip.end_date ?? '');
+    if (end === null) return;
 
-    const newStart = prompt("Start date (YYYY-MM-DD):", currentStart);
-    const newEnd = prompt("End date (YYYY-MM-DD):", currentEnd);
-
-    fetch('../backend/trips/update_trip.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ trip_id: tripId, trip_name: newName, start_date: newStart, end_date: newEnd })
+    postJson('../backend/trips/update_trip.php', {
+        trip_id: trip.trip_id, trip_name: name, start_date: start, end_date: end
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            loadTrips();
-        } else {
-            alert("Error: " + data.error);
-        }
-    })
-    .catch(error => console.error("Something went wrong:", error));
+        .then(data => {
+            if (data.success) {
+                loadTrips();
+            } else {
+                showMessage(data.error, true);
+            }
+        })
+        .catch(error => console.error('Something went wrong:', error));
 }
 
 function deleteTrip(tripId) {
-    if (!confirm("Are you sure you want to delete this trip?")) return;
-
-    fetch('../backend/trips/delete_trip.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ trip_id: tripId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            loadTrips();
-        } else {
-            alert("Error: " + data.error);
-        }
-    })
-    .catch(error => console.error("Something went wrong:", error));
+    if (!confirm('Are you sure you want to delete this trip?')) return;
+    postJson('../backend/trips/delete_trip.php', { trip_id: tripId })
+        .then(data => {
+            if (data.success) {
+                loadTrips();
+            } else {
+                showMessage(data.error, true);
+            }
+        })
+        .catch(error => console.error('Something went wrong:', error));
 }
 
 loadTrips();

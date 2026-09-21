@@ -28,5 +28,13 @@ if (!$trip) {
     exit;
 }
 
+$sum = $pdo->prepare("
+    SELECT COALESCE(SUM(a.estimated_cost), 0) FROM activities a
+    JOIN destinations d ON a.destination_id = d.destination_id
+    WHERE d.trip_id = ?
+");
+$sum->execute([$trip_id]);
+$trip['total_cost'] = (float)$sum->fetchColumn();
+
 echo json_encode(["success" => true, "trip" => $trip]);
 ?>

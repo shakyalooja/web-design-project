@@ -16,6 +16,13 @@ $activity_id = $data['activity_id'] ?? null;
 $activity_name = trim($data['activity_name'] ?? '');
 $category = trim($data['category'] ?? '');
 $estimated_cost = $data['estimated_cost'] ?? 0;
+if ($estimated_cost === '') $estimated_cost = 0;
+
+if (!is_numeric($estimated_cost) || $estimated_cost < 0) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "error" => "Cost must be a number of 0 or more."]);
+    exit;
+}
 
 if (!$activity_id || !$activity_name) {
     http_response_code(400);

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trip Detail</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -10,105 +10,76 @@
     <header class="site-header">
         <a href="dashboard.html" class="brand"><span class="brand-icon">🧭</span> TripPlanner</a>
         <nav>
-            <a href="dashboard.html"><button class="btn-secondary">Back to Dashboard</button></a>
+            <a href="dashboard.html" class="btn-link">Back to Dashboard</a>
             <button id="logoutBtn" class="btn-secondary">Logout</button>
         </nav>
     </header>
 
- <div class="page-container">
-    <h1 id="tripNameHeading">Trip Name Here</h1>
+    <main class="page-container">
+        <h1 id="tripNameHeading">Trip Name Here</h1>
+        <p id="tripDates" class="muted"></p>
 
-    <p>Total Estimated Cost: <span id="totalCost">$0</span></p>
+        <p class="total-cost">Total Estimated Cost: <strong id="totalCost">$0.00</strong></p>
 
-    <button id="editTripBtn">Edit Trip</button>
-    <button id="deleteTripBtn">Delete Trip</button>
-    <button id="shareTripBtn">Share Trip</button>
-    <a href="dashboard.html"><button type="button">Back to Dashboard</button></a>
-    <a href="dashboard.html"><button type="button">Back to Dashboard</button></a>
-    <button id="logoutBtn">Logout</button>
+        <div class="actions">
+            <button id="editTripBtn" class="btn-secondary">Edit Trip</button>
+            <button id="shareTripBtn" class="btn-secondary">Share Trip</button>
+            <button id="deleteTripBtn" class="btn-danger">Delete Trip</button>
+        </div>
+        <p id="message" role="status" aria-live="polite"></p>
 
-    <h2>Destinations</h2>
+        <h2>Destinations</h2>
+        <div id="destinationList">
+            <p>Destinations will appear here.</p>
+        </div>
 
-    <!-- This is where destination cards will go later -->
-    <div id="destinationList">
-        <p>Destinations will appear here.</p>
-    </div>
+        <h3>Add a Destination</h3>
+        <form id="destinationForm">
+            <label for="locationName">Location Name:</label>
+            <input type="text" name="location_name" id="locationName" required>
 
-    <h3>Add a Destination</h3>
-    <form id="destinationForm">
-        <label>Location Name:</label>
-        <input type="text" name="location_name" id="locationName">
-        <br><br>
+            <label for="arrivalDate">Arrival Date:</label>
+            <input type="date" name="arrival_date" id="arrivalDate">
 
-        <label>Arrival Date:</label>
-        <input type="date" name="arrival_date" id="arrivalDate">
-        <br><br>
+            <label for="departureDate">Departure Date:</label>
+            <input type="date" name="departure_date" id="departureDate">
 
-        <label>Departure Date:</label>
-        <input type="date" name="departure_date" id="departureDate">
-        <br><br>
+            <label for="notes">Notes:</label>
+            <textarea name="notes" id="notes"></textarea>
 
-        <label>Notes:</label>
-        <textarea name="notes" id="notes"></textarea>
-        <br><br>
+            <button type="submit">Add Destination</button>
+        </form>
 
-        <button type="submit">Add Destination</button>
-    </form>
+        <h2>Activities</h2>
+        <div id="activityList">
+            <p>Activities will appear here.</p>
+        </div>
 
+        <h3>Add an Activity</h3>
+        <form id="activityForm">
+            <label for="activityDestination">Destination:</label>
+            <select name="destination_id" id="activityDestination"></select>
 
-    <h2>Activities</h2>
+            <label for="activityName">Activity Name:</label>
+            <input type="text" name="activity_name" id="activityName" required>
 
-    <!-- This is where activity cards will go later, per destination -->
-    <div id="activityList">
-        <p>Activities will appear here.</p>
-    </div>
+            <label for="category">Category:</label>
+            <select name="category" id="category">
+                <option value="transport">Transport</option>
+                <option value="accommodation">Accommodation</option>
+                <option value="food">Food</option>
+                <option value="sightseeing">Sightseeing</option>
+                <option value="other">Other</option>
+            </select>
 
-    <h3>Add an Activity</h3>
-<form id="activityForm">
-    <label for="activityDestination">Destination:</label>
-    <select name="destination_id" id="activityDestination"></select>
-    <br><br>
+            <label for="estimatedCost">Estimated Cost ($):</label>
+            <input type="number" name="estimated_cost" id="estimatedCost" step="0.01" min="0" value="0">
 
-    <label for="activityName">Activity Name:</label>
-    <input type="text" name="activity_name" id="activityName">
-    <br><br>
+            <button type="submit">Add Activity</button>
+        </form>
+    </main>
 
-    <label for="category">Category:</label>
-    <select name="category" id="category">
-        <option value="transport">Transport</option>
-        <option value="accommodation">Accommodation</option>
-        <option value="food">Food</option>
-        <option value="sightseeing">Sightseeing</option>
-        <option value="other">Other</option>
-    </select>
-    <br><br>
-
-    <label for="estimatedCost">Estimated Cost:</label>
-    <input type="number" name="estimated_cost" id="estimatedCost" step="0.01">
-    <br><br>
-
-    <button type="submit">Add Activity</button>
-</form>
-<form id="destinationForm">
-    <label for="locationName">Location Name:</label>
-    <input type="text" name="location_name" id="locationName">
-    <br><br>
-
-    <label for="arrivalDate">Arrival Date:</label>
-    <input type="date" name="arrival_date" id="arrivalDate">
-    <br><br>
-
-    <label for="departureDate">Departure Date:</label>
-    <input type="date" name="departure_date" id="departureDate">
-    <br><br>
-
-    <label for="notes">Notes:</label>
-    <textarea name="notes" id="notes"></textarea>
-    <br><br>
-
-    <button type="submit">Add Destination</button>
-</form>
-</div>
+    <script src="js/common.js"></script>
     <script src="js/auth-check.js"></script>
     <script src="js/detail.js"></script>
 </body>

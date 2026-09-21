@@ -4,7 +4,7 @@ const tripId = urlParams.get('trip_id');
 if (!tripId) {
     document.getElementById('tripNameHeading').textContent = "No trip specified.";
 } else {
-    fetch(`../backend/trips/get_shared_trip.php?trip_id=${tripId}`)
+    fetch(`../backend/trips/get_shared_trip.php?trip_id=${encodeURIComponent(tripId)}`)
         .then(response => response.json())
         .then(data => {
             if (!data.success) {
@@ -28,14 +28,14 @@ if (!tripId) {
                 let activitiesHtml = '<p>No activities yet.</p>';
                 if (dest.activities.length > 0) {
                     activitiesHtml = '<ul>' + dest.activities.map(act =>
-                        `<li>${act.activity_name} (${act.category}) - $${act.estimated_cost}</li>`
+                        `<li>${esc(act.activity_name)} (${esc(act.category)}) - $${Number(act.estimated_cost).toFixed(2)}</li>`
                     ).join('') + '</ul>';
                 }
 
                 div.innerHTML = `
-                    <h3>${dest.location_name}</h3>
-                    <p>${dest.arrival_date ?? ''} to ${dest.departure_date ?? ''}</p>
-                    <p>${dest.notes ?? ''}</p>
+                    <h3>${esc(dest.location_name)}</h3>
+                    <p>${esc(dest.arrival_date ?? '?')} to ${esc(dest.departure_date ?? '?')}</p>
+                    <p>${esc(dest.notes)}</p>
                     ${activitiesHtml}
                 `;
                 destinationList.appendChild(div);

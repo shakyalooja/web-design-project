@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
@@ -14,7 +14,7 @@
         </nav>
     </header>
 
-    <div class="page-container">
+    <main class="page-container">
         <h1>My Trips</h1>
 
         <h2>Featured Destinations</h2>
@@ -28,34 +28,31 @@
             <button class="carousel-btn" id="nextBtn">&#10095;</button>
         </div>
 
-        <button id="newTripBtn">+ New Trip</button>
+        <button id="newTripBtn" type="button">+ New Trip</button>
+        <p id="message" role="status" aria-live="polite"></p>
 
         <div id="tripList">
             <p>Trip cards will appear here.</p>
         </div>
 
-        <h2>Add a Trip</h2>
-        <form id="tripForm">
+        <h2 id="addTripHeading">Add a Trip</h2>
+        <form id="tripForm" aria-labelledby="addTripHeading">
             <label for="tripName">Trip Name:</label>
-            <input type="text" name="trip_name" id="tripName">
-            <br><br>
+            <input type="text" name="trip_name" id="tripName" required>
 
             <label for="startDate">Start Date:</label>
             <input type="date" name="start_date" id="startDate">
-            <br><br>
 
             <label for="endDate">End Date:</label>
             <input type="date" name="end_date" id="endDate">
-            <br><br>
 
             <button type="submit">Save Trip</button>
         </form>
-    </div>
+    </main>
 
+    <script src="js/common.js"></script>
     <script src="js/carousel.js"></script>
     <script src="js/auth-check.js"></script>
     <script src="js/dashboard.js"></script>
 </body>
-
-   
 </html>

@@ -22,11 +22,11 @@ function renderCarousel() {
 
     track.innerHTML = places.map(place => `
         <div class="place-card">
-            <img src="${place.image_url}" alt="${place.place_name}">
+            <img src="${esc(place.image_url)}" alt="${esc(place.place_name)}">
             <div class="place-card-info">
-                <h4>${place.place_name}</h4>
-                <p class="place-country">${place.country ?? ''}</p>
-                <p class="place-desc">${place.description ?? ''}</p>
+                <h4>${esc(place.place_name)}</h4>
+                <p class="place-country">${esc(place.country)}</p>
+                <p class="place-desc">${esc(place.description)}</p>
             </div>
         </div>
     `).join('');
