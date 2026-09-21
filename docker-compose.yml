@@ -6,6 +6,23 @@ services:
     ports:
       - "8080:80"
     volumes:
-      # Mount the local frontend directory to the container so that changes are reflected without rebuilding
-      - ./frontend:/usr/share/nginx/html
+      - ./frontend:/var/www/html
+      - ./backend:/var/www/html/backend
+    depends_on:
+      - db
     restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "trip_planner"
+    volumes:
+      - ./database/trip_planner.sql:/docker-entrypoint-initdb.d/init.sql
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+
+volumes:
+  db_data:

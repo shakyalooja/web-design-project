@@ -1,10 +1,7 @@
-FROM nginx:alpine
+FROM php:8.2-apache
 
-# Copy the frontend files to the Nginx html directory
-COPY frontend /usr/share/nginx/html
+# Install PDO and PDO MySQL extensions
+RUN docker-php-ext-install pdo pdo_mysql
 
-# Expose port 80
-EXPOSE 80
-
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
