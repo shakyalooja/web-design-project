@@ -6,7 +6,7 @@ Style · CSS
     margin: 0;
     padding: 0;
 }
- 
+
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background-color: #f4f6f9;
@@ -14,22 +14,22 @@ body {
     line-height: 1.6;
     min-height: 100vh;
 }
- 
+
 h1, h2, h3, h4 {
     color: #0f172a;
     margin-bottom: 12px;
     font-weight: 700;
 }
- 
+
 a {
     color: #2563eb;
     text-decoration: none;
 }
- 
+
 a:hover {
     text-decoration: underline;
 }
- 
+
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -46,12 +46,12 @@ textarea {
     color: #1e293b;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
- 
+
 input::placeholder,
 textarea::placeholder {
     color: #94a3b8;
 }
- 
+
 input:focus,
 select:focus,
 textarea:focus,
@@ -61,7 +61,7 @@ a:focus {
     border-color: #6366f1;
     box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
 }
- 
+
 label {
     display: block;
     font-weight: 600;
@@ -70,8 +70,8 @@ label {
     font-size: 13px;
     color: #475569;
 }
- 
- 
+
+
 /* ===== Buttons ===== */
 button {
     background: #6366f1;
@@ -87,17 +87,17 @@ button {
     box-shadow: 0 1px 2px rgba(99,102,241,0.3);
     transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
 }
- 
+
 button:hover {
     background: #4f46e5;
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(99,102,241,0.35);
 }
- 
+
 button:active {
     transform: translateY(0);
 }
- 
+
 /* Secondary/outline button style — used via class="btn-secondary" */
 button.btn-secondary,
 a > button.btn-secondary {
@@ -106,14 +106,14 @@ a > button.btn-secondary {
     border: 1px solid #d5dbe3;
     box-shadow: none;
 }
- 
+
 button.btn-secondary:hover {
     background: #f1f5f9;
     color: #1e293b;
     transform: none;
     box-shadow: none;
 }
- 
+
 /* Danger button — for Delete actions, add class="btn-danger" */
 button.btn-danger {
     background: #ffffff;
@@ -121,15 +121,15 @@ button.btn-danger {
     border: 1px solid #fecaca;
     box-shadow: none;
 }
- 
+
 button.btn-danger:hover {
     background: #fef2f2;
     color: #b91c1c;
     transform: none;
     box-shadow: none;
 }
- 
- 
+
+
 /* ===== Site Header ===== */
 .site-header {
     background: #ffffff;
@@ -143,7 +143,7 @@ button.btn-danger:hover {
     z-index: 10;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
- 
+
 .site-header .brand {
     font-size: 19px;
     font-weight: 800;
@@ -153,26 +153,26 @@ button.btn-danger:hover {
     gap: 8px;
     text-decoration: none;
 }
- 
+
 .site-header .brand span.brand-icon {
     font-size: 20px;
 }
- 
+
 .site-header .brand:hover {
     text-decoration: none;
 }
- 
+
 .site-header nav {
     display: flex;
     align-items: center;
     gap: 10px;
 }
- 
+
 .site-header nav button {
     margin: 0;
 }
- 
- 
+
+
 /* ===== Auth pages (login, register) ===== */
 .auth-page-wrapper {
     display: flex;
@@ -181,7 +181,7 @@ button.btn-danger:hover {
     min-height: 100vh;
     padding: 20px;
 }
- 
+
 .auth-container {
     background: #ffffff;
     border: 1px solid #e5e9f0;
@@ -191,36 +191,36 @@ button.btn-danger:hover {
     width: 100%;
     max-width: 380px;
 }
- 
+
 .auth-container h1 {
     text-align: center;
     margin-bottom: 22px;
 }
- 
+
 .auth-container form {
     width: 100%;
 }
- 
+
 .auth-container button {
     width: 100%;
     justify-content: center;
 }
- 
+
 .auth-container p {
     margin-top: 18px;
     text-align: center;
     font-size: 14px;
     color: #64748b;
 }
- 
- 
+
+
 /* ===== Dashboard & Detail pages ===== */
 .page-container {
     max-width: 780px;
     margin: 0 auto;
     padding: 36px 20px 60px;
 }
- 
+
 .page-container form {
     background: #ffffff;
     border: 1px solid #e5e9f0;
@@ -230,13 +230,13 @@ button.btn-danger:hover {
     margin-bottom: 26px;
     margin-top: 16px;
 }
- 
+
 #tripList,
 #destinationList,
 #activityList {
     margin-top: 18px;
 }
- 
+
 .card {
     background: #ffffff;
     border: 1px solid #e5e9f0;
@@ -246,33 +246,33 @@ button.btn-danger:hover {
     margin-bottom: 12px;
     transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
- 
+
 .card:hover {
     box-shadow: 0 4px 14px rgba(0,0,0,0.08);
     transform: translateY(-1px);
 }
- 
+
 .card h3, .card h4 {
     margin-bottom: 6px;
 }
- 
+
 .card p {
     color: #64748b;
     margin: 4px 0;
 }
- 
+
 .card button {
     padding: 6px 14px;
     font-size: 13px;
 }
- 
+
 #tripNameHeading + p {
     color: #64748b;
     margin-bottom: 18px;
     font-size: 16px;
 }
- 
- 
+
+
 /* ===== Featured Destinations carousel ===== */
 .carousel {
     display: flex;
@@ -280,12 +280,12 @@ button.btn-danger:hover {
     gap: 12px;
     margin-bottom: 30px;
 }
- 
+
 .carousel-track-container {
     overflow: hidden;
     width: 100%;
 }
- 
+
 .carousel-track {
     display: flex;
     gap: 14px;
@@ -294,11 +294,11 @@ button.btn-danger:hover {
     scrollbar-width: none;
     padding: 4px 4px 8px;
 }
- 
+
 .carousel-track::-webkit-scrollbar {
     display: none;
 }
- 
+
 .place-card {
     flex: 0 0 200px;
     height: 240px;
@@ -310,19 +310,19 @@ button.btn-danger:hover {
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
- 
+
 .place-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
- 
+
 .place-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
 }
- 
+
 .place-card-info {
     position: absolute;
     bottom: 0;
@@ -331,13 +331,13 @@ button.btn-danger:hover {
     padding: 14px 12px 12px;
     background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 65%, transparent 100%);
 }
- 
+
 .place-card-info h4 {
     color: #fff;
     font-size: 15px;
     margin-bottom: 2px;
 }
- 
+
 .place-country {
     color: #93c5fd;
     font-size: 11px;
@@ -346,14 +346,14 @@ button.btn-danger:hover {
     letter-spacing: 0.5px;
     margin-bottom: 4px;
 }
- 
+
 .place-desc {
     color: rgba(255,255,255,0.85);
     font-size: 12px;
     margin: 0;
     line-height: 1.4;
 }
- 
+
 .carousel-btn {
     background: #ffffff;
     border: 1px solid #e5e9f0;
@@ -367,30 +367,30 @@ button.btn-danger:hover {
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     margin: 0;
 }
- 
+
 .carousel-btn:hover {
     background: #f1f5f9;
     transform: none;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
- 
- 
+
+
 /* ===== Shared trip page (public, read-only) ===== */
 .shared-page {
     max-width: 780px;
     margin: 0 auto;
     padding: 36px 20px 60px;
 }
- 
+
 .shared-page p#tripDates {
     color: #64748b;
     margin-bottom: 24px;
 }
- 
+
 .shared-page #destinationList {
     margin-top: 16px;
 }
- 
+
 /* ===== Home / Landing page ===== */
 .home-hero {
     max-width: 640px;
@@ -471,4 +471,20 @@ button.btn-large {
     font-size: 13px;
     border-top: 1px solid #e5e9f0;
     margin-top: 40px;
+}
+
+@media (max-width: 600px) {
+    .site-header {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .home-hero h1 {
+        font-size: 28px;
+    }
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    .auth-container {
+        padding: 24px;
+    }
 }
