@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true">
+    <testsuites>
+        <testsuite name="auth">
+            <directory>tests/Auth</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="TEST_BASE_URL" value="http://localhost:8080" force="false"/>
+        <env name="TEST_DB_DSN" value="mysql:host=127.0.0.1;port=3307;dbname=trip_planner;charset=utf8mb4" force="false"/>
+        <env name="TEST_DB_USER" value="tripplanner" force="false"/>
+        <env name="TEST_DB_PASS" value="tripplanner_pw" force="false"/>
+    </php>
+</phpunit>

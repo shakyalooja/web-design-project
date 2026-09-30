@@ -30,3 +30,14 @@ Run this after any change to `database/trip_planner.sql`. The database is only c
 docker compose down -v
 docker compose up -d --build
 ```
+
+## Run the tests
+
+The tests send real requests to the running app, so start it first with `docker compose up -d`. You need PHP 8.2+ and Composer on your machine.
+
+```
+composer install
+composer test
+```
+
+Test users use `@phpunit.test` emails and are deleted after each test.
